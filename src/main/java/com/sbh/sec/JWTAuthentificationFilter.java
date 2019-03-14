@@ -2,12 +2,11 @@ package com.sbh.sec;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,6 +18,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbh.entities.AppUser;
 
@@ -56,7 +56,8 @@ public class JWTAuthentificationFilter extends UsernamePasswordAuthenticationFil
 				.withSubject(user.getUsername())
 				.withArrayClaim("roles", roles.toArray(new String[roles.size()]))
 				.withExpiresAt(new Date(System.currentTimeMillis()+10*24*3600))
-				
+				.sign(Algorithm.HMAC256("sou@gmail.com"));
+		response.addHeader("Authorization", jwt);
 	}
 
 }
