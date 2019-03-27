@@ -55,9 +55,9 @@ public class JWTAuthentificationFilter extends UsernamePasswordAuthenticationFil
 				.withIssuer(request.getRequestURI())
 				.withSubject(user.getUsername())
 				.withArrayClaim("roles", roles.toArray(new String[roles.size()]))
-				.withExpiresAt(new Date(System.currentTimeMillis()+10*24*3600))
-				.sign(Algorithm.HMAC256("sou@gmail.com"));
-		response.addHeader("Authorization", jwt);
+				.withExpiresAt(new Date(System.currentTimeMillis()+SecurityParam.EXPIRATION))
+				.sign(Algorithm.HMAC256(SecurityParam.SECRET));
+		response.addHeader(SecurityParam.JWT_HEADER_NAME, jwt);
 	}
 
 }
